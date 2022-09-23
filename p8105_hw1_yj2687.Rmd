@@ -12,7 +12,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r,echo = FALSE, message = FALSE}
 library(tidyverse)
-library(ggplot2)
 ```
 
 
@@ -25,7 +24,11 @@ data("penguins", package = "palmerpenguins")
 names_penguins = names(penguins)
 
 skimr::skim(penguins)
-  
+
+levels_species = levels(penguins$species)
+levels_sex = levels(penguins$sex)
+levels_island = levels(penguins$island)
+
 nrow = nrow(penguins)
 ncol = ncol(penguins)
 
@@ -34,9 +37,11 @@ mean_flipper_length = penguins %>%
   summarise(mean(flipper_length_mm)) %>% 
   round(digits = 2)
 ```
-The size of the dataset is `r nrow` x `r ncol`. <br>
 The names of the variables are `r names_penguins`. <br>
+The levels of species are `r levels_species`. The levels of sex are `r levels_sex`. The levels of island are `r levels_island`.<br>
+The size of the dataset is `r nrow` rows x `r ncol` columns. <br>
 The mean flipper length is `r mean_flipper_length`.
+
 
 
 #### Make a scatterplot.
@@ -45,7 +50,7 @@ scatterplot = penguins %>%
   drop_na() %>% 
   ggplot() + geom_point(aes(bill_length_mm, flipper_length_mm, color = species))
 
-ggsave("Scatterplot.pdf", plot = scatterplot)
+ggsave("p8105_hw1_scatterplot.pdf", plot = scatterplot)
 ```
 
 
@@ -58,7 +63,7 @@ ggsave("Scatterplot.pdf", plot = scatterplot)
 df = tibble(
   vec_numeric = rnorm(10),
   vec_logical = vec_numeric > 0,
-  vec_char = rep(c("a", "b", "c", "d", "e"), length.out = 10),
+  vec_char = rep(c("A", "B", "C", "D", "E"), length.out = 10),
   vec_factor = factor(rep(c("high","middle","low"), length.out = 10))
   )
 ```
@@ -75,11 +80,11 @@ The calculation of mean works for numeric and logical vectors, but not for the c
 
 
 #### Conversion with as.numeric function.
-```{r,message=FALSE,eval=FALSE}
+```{r,message=FALSE}
 mean(as.numeric((pull(df,vec_logical))))
 mean(as.numeric(pull(df,vec_char)))
 mean(as.numeric(pull(df,vec_factor)))
 ```
-The logical and factor vectors are successfully converted to numeric vectors, thus their means can be calculated. However, this conversion cannot be applied to character vectors. 
+The logical and factor vectors are successfully converted to numeric vectors, however, this conversion cannot be applied to character vectors. This is because converting the logical vector to a numeric vector changed **TRUE to 1** and **FALSE to 0**, converting the factor vector to a numeric vector changed **high level to 1**, **middle level to 2**, and **low level to 3**. Converting the character vector to a numeric vector resulted in the fact that all characters were set to NAs, thus the `mean` function didn't work.
 
 
