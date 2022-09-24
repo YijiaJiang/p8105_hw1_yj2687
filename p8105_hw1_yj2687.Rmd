@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r,echo = FALSE, message = FALSE}
+```{r,message = FALSE}
 library(tidyverse)
 ```
 
@@ -40,7 +40,7 @@ mean_flipper_length = penguins %>%
 The names of the variables are `r names_penguins`. <br>
 The levels of species are `r levels_species`. The levels of sex are `r levels_sex`. The levels of island are `r levels_island`.<br>
 The size of the dataset is `r nrow` rows x `r ncol` columns. <br>
-The mean flipper length is `r mean_flipper_length`.
+The mean flipper length is `r mean_flipper_length`mm.
 
 
 
